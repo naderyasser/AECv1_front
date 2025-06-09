@@ -197,10 +197,10 @@ export default function Index() {
           ) : null}
         </Flex>
         {/* Only show pagination if we have courses or the API returns pagination info */}
-        {(data?.results?.length > 0 || data?.count > 0) && !error && (
+        {(data?.results?.length > 0 || data?.pagination?.totalResult > 0) && !error && (
           <Pagination
             isLoading={loading}
-            totalPages={Math.ceil((data?.count || 0) / 10) || 1}
+            totalPages={data?.pagination?.totalPages || Math.ceil((data?.pagination?.totalResult || 0) / (data?.pagination?.pageSize || 10)) || 1}
             currentPage={page}
             onChange={(newPage) => setPage(newPage)}
           />

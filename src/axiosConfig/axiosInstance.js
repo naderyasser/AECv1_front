@@ -8,7 +8,7 @@ import { UpdateAccessToken } from "../Utils/UpdateAccessToken/UpdateAccessToken"
 const isProduction = import.meta.env.PROD || import.meta.env.VITE_USE_PRODUCTION === "true";
 const apiUrl = isProduction
   ? import.meta.env.VITE_PRODUCTION_API_URL || "https://api.aectraining.com.sa/api"
-  : import.meta.env.VITE_API_URL || "http://74.48.196.51:8877/api";
+  : import.meta.env.VITE_API_URL || "http://46.202.131.108:8080/api";
 
 // Debug logging (remove in production)
 console.log("Environment:", {

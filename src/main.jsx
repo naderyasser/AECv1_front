@@ -6,6 +6,7 @@ import { UserDataProvider } from "./Context/UserDataProvider/UserDataProvider";
 import { LazyPageWrapper } from "./Components/Common/Index";
 import { TabsMenuExpandProvider } from "./Context/TabsMenuExpandProvider/TabsMenuExpandProvider";
 import { BaseNavigationHandler } from "./Utils/BaseNavigationHandler/BaseNavigationHandler";
+import "./Utils/ApiTest/ApiTest"; // Import API test utility
 
 const Student = lazy(() => import("./App.Student"));
 const Admin = lazy(() => import("./App.Admin"));

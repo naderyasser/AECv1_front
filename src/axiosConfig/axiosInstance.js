@@ -56,6 +56,7 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (config) => {
+    // Success case
     const token = getToken();
     if (token?.access) {
       config.headers["Authorization"] = `bearer ${token.access}`;
@@ -64,17 +65,34 @@ instance.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    console.log(error);
+    
+    // Improved error logging
+    console.error("API Error:", {
+      url: originalRequest?.url,
+      method: originalRequest?.method,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data,
+      message: error.message
+    });
+    
+    // Handle token refresh on 401 Unauthorized
     if (error.response?.status === 401 && !originalRequest?._retry) {
+      console.log("Attempting to refresh token due to 401 error");
       originalRequest._retry = true;
-      const resp = await refreshToken();
-      const access_token = resp.access;
-      instance.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${access_token}`;
-      UpdateAccessToken(resp);
-      return instance(originalRequest);
+      try {
+        const resp = await refreshToken();
+        const access_token = resp.access;
+        instance.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
+        UpdateAccessToken(resp);
+        console.log("Token refreshed successfully, retrying request");
+        return instance(originalRequest);
+      } catch (refreshError) {
+        console.error("Token refresh failed:", refreshError);
+        return Promise.reject(error);
+      }
     }
+    
     return Promise.reject(error);
   }
 );

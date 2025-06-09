@@ -34,11 +34,18 @@ export const UserDataProvider = ({ children }) => {
 
   const onAuth = async (data, type = "Student") => {
     try {
+      console.log("Authentication attempt:", { 
+        email: data.email, 
+        apiUrl: axiosInstance.defaults.baseURL,
+        type 
+      });
+      
       setUser({
         loading: true,
         data: undefined,
         error: undefined,
       });
+      
       const { data: ResponceData, error } = await tryCatch(async () => {
         return await axiosInstance.post("/token/", {
           email: data.email,
@@ -47,12 +54,17 @@ export const UserDataProvider = ({ children }) => {
       });
 
       if (error) {
+        console.error("Authentication error:", error?.response?.data || error);
         setUser({
           loading: false,
           data: undefined,
-          error: true,
+          error: error?.response?.data || true,
         });
       } else {
+        console.log("Authentication successful:", { 
+          userType: type,
+          hasToken: ResponceData?.data?.access ? 'Yes' : 'No'
+        });
         setUser({
           loading: false,
           data: { ...data, token: ResponceData.data, role: type },
@@ -67,13 +79,21 @@ export const UserDataProvider = ({ children }) => {
   const refreshToken = async () => {
     try {
       if (!user.data?.token?.refresh) {
+        console.error("No refresh token available");
         throw new Error("No refresh token available");
       }
+      
+      console.log("Attempting to refresh token", {
+        hasRefreshToken: !!user.data?.token?.refresh,
+        apiUrl: axiosInstance.defaults.baseURL
+      });
+      
       setUser({
         loading: true,
         data: user.data,
-        error: true,
+        error: undefined, // Don't set error to true during loading
       });
+      
       const { data: ResponceData, error } = await tryCatch(async () => {
         return await axiosInstance.post("/token/refresh/", {
           refresh: user.data.token.refresh,
@@ -81,12 +101,14 @@ export const UserDataProvider = ({ children }) => {
       });
 
       if (error) {
+        console.error("Token refresh failed:", error?.response?.data || error);
         setUser({
           loading: false,
-          data: undefined,
-          error: true,
+          data: undefined, // Clear user data on refresh failure
+          error: error?.response?.data || true,
         });
       } else {
+        console.log("Token refreshed successfully");
         setUser((prevUser) => ({
           ...prevUser,
           loading: false,

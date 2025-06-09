@@ -1,7 +1,7 @@
 import { AspectRatio, Box, Button, Flex, Stack } from "@chakra-ui/react";
 import Lottie from "lottie-react";
 import React, { useMemo, useState } from "react";
-import AnimationData from "../../../Assets/ImageUploaderAnimation/imageUploaderAnimation.json";
+import AnimationData from "../../../assets/ImageUploaderAnimation/imageUploaderAnimation.json";
 import ReactPlayer from "react-player";
 export const VideoUploader = ({
   containerStyles,

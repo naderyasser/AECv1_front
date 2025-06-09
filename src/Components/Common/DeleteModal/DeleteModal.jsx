@@ -12,7 +12,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import Lottie from "lottie-react";
-import animationData from "../../../Assets/DeleteAnimation/wired-flat-185-trash-bin-hover-empty.json";
+import animationData from "../../../assets/DeleteAnimation/wired-flat-185-trash-bin-hover-empty.json";
 export const DeleteModal = ({ isOpen, onClose, onDelete, isLoading }) => {
   return (
     <Modal

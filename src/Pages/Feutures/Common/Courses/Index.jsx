@@ -13,6 +13,9 @@ import {
   useDisclosure,
   IconButton,
   Skeleton,
+  Box,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Filteration } from "./Parts/Filteration";
@@ -163,7 +166,14 @@ export default function Index() {
           h="100%"
           alignItems="start"
         >
-          {data?.results?.length > 0 ? (
+          {error && (
+            <Alert status="error" borderRadius="md" width="100%">
+              <AlertIcon />
+              Error loading courses. Please try refreshing the page or contact support.
+            </Alert>
+          )}
+          
+          {!error && data?.results?.length > 0 ? (
             data.results.map((item, index) => (
               <CourseCard
                 {...item}
@@ -171,7 +181,7 @@ export default function Index() {
                 transition={`${(index + 1) * 0.2}s`}
               />
             ))
-          ) : !loading ? (
+          ) : !loading && !error ? (
             <Flex 
               direction="column" 
               alignItems="center" 
@@ -179,18 +189,22 @@ export default function Index() {
               p="10" 
               textAlign="center" 
               color="gray.500"
+              width="100%"
             >
               <Box fontSize="xl" mb="3">No courses found</Box>
               <Box fontSize="md">Try adjusting your filters or check back later</Box>
             </Flex>
           ) : null}
         </Flex>
-        <Pagination
-          isLoading={loading}
-          totalPages={data?.pagination?.totalPages || 1}
-          currentPage={page}
-          onChange={(newPage) => setPage(newPage)}
-        />
+        {/* Only show pagination if we have courses or the API returns pagination info */}
+        {(data?.results?.length > 0 || data?.count > 0) && !error && (
+          <Pagination
+            isLoading={loading}
+            totalPages={Math.ceil((data?.count || 0) / 10) || 1}
+            currentPage={page}
+            onChange={(newPage) => setPage(newPage)}
+          />
+        )}
       </Stack>
     </Flex>
   );

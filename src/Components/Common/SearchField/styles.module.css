@@ -1,0 +1,3 @@
+.results-container::-webkit-scrollbar-thumb{
+    background-color: gray;
+}

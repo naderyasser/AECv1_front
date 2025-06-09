@@ -1,0 +1,14 @@
+@keyframes AnimatedText {
+  from {
+    opacity: 0;
+    translate: 0px 100%;
+  }
+  to {
+    opacity: 1;
+    translate: 0px 0px;
+  }
+}
+.error-text {
+  animation: AnimatedText linear 1 0.3s;
+  -webkit-animation: AnimatedText linear 1 0.3s;
+}

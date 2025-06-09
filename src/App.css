@@ -1,0 +1,58 @@
+* {
+  padding: 0%;
+  margin: 0%;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: black;
+}
+
+.no-scroll-bar::-webkit-scrollbar-thumb {
+  background-color: gainsboro;
+}
+.no-scroll-bar::-webkit-scrollbar {
+  height: 4px;
+}
+
+@keyframes Show_Up_Animation {
+  0% {
+    opacity: 0;
+    translate: 0px 100%;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    translate: 0px 0%;
+  }
+}
+@keyframes Show_Opacity_Animation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.show-up-animation {
+  animation: 1 Show_Up_Animation 0.3s linear;
+}
+.show-opacity-animation {
+  will-change: opacity;
+  animation: 1 Show_Opacity_Animation 0.2s linear;
+}
+.ql-editor {
+  direction: rtl !important;
+  text-align: right !important;
+}
+.file-drop {
+  max-width: 100% !important;
+  width: 100% !important;
+  height: 100% !important;
+}

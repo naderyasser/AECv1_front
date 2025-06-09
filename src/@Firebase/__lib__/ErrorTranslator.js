@@ -1,0 +1,83 @@
+const firebaseErrorMessagesInArabic = {
+  // Authentication Errors
+  "auth/invalid-email": "البريد الإلكتروني غير صالح",
+  "auth/user-disabled": "تم تعطيل المستخدم",
+  "auth/user-not-found": "لم يتم العثور على المستخدم",
+  "auth/wrong-password": "كلمة المرور خاطئة",
+  "auth/email-already-in-use": "البريد الإلكتروني مستخدم بالفعل",
+  "auth/operation-not-allowed": "العملية غير مسموح بها",
+  "auth/weak-password": "كلمة المرور ضعيفة",
+  "auth/invalid-verification-code": "رمز التحقق غير صالح",
+  "auth/invalid-verification-id": "معرف التحقق غير صالح",
+  "auth/invalid-credential": "بيانات المستخدم غير صحيحة", // Added error code
+
+  // Firestore Errors
+  "firestore/cancelled": "تم إلغاء العملية",
+  "firestore/unknown": "خطأ غير معروف",
+  "firestore/invalid-argument": "وسيطة غير صالحة",
+  "firestore/deadline-exceeded": "انتهت المهلة المحددة",
+  "firestore/not-found": "لم يتم العثور على المستند",
+  "firestore/already-exists": "المستند موجود بالفعل",
+  "firestore/permission-denied": "تم رفض الإذن",
+  "firestore/resource-exhausted": "استنفدت الموارد",
+  "firestore/failed-precondition": "فشل شرط مسبق",
+  "firestore/aborted": "تم إجهاض العملية",
+  "firestore/out-of-range": "خارج النطاق المسموح به",
+  "firestore/unimplemented": "لم يتم تنفيذ الوظيفة",
+  "firestore/internal": "خطأ داخلي",
+  "firestore/unavailable": "الخدمة غير متوفرة",
+  "firestore/data-loss": "فقدان البيانات",
+  "firestore/unauthenticated": "غير مصادق عليه",
+  cancelled: "تم إلغاء العملية",
+  unknown: "خطأ غير معروف",
+  "invalid-argument": "وسيطة غير صالحة",
+  "deadline-exceeded": "انتهت المهلة المحددة",
+  "not-found": "لم يتم العثور على المستند",
+  "already-exists": "المستند موجود بالفعل",
+  "permission-denied": "تم رفض الإذن",
+  "resource-exhausted": "استنفدت الموارد",
+  "failed-precondition": "فشل شرط مسبق",
+  aborted: "تم إجهاض العملية",
+  "out-of-range": "خارج النطاق المسموح به",
+  unimplemented: "لم يتم تنفيذ الوظيفة",
+  internal: "خطأ داخلي",
+  unavailable: "الخدمة غير متوفرة",
+  "data-loss": "فقدان البيانات",
+  unauthenticated: "غير مصادق عليه",
+  // Storage Errors
+  "storage/unknown": "خطأ غير معروف",
+  "storage/object-not-found": "لم يتم العثور على الكائن",
+  "storage/bucket-not-found": "لم يتم العثور على الجردل",
+  "storage/project-not-found": "لم يتم العثور على المشروع",
+  "storage/quota-exceeded": "تم تجاوز الحصة المسموح بها",
+  "storage/unauthenticated": "غير مصادق عليه",
+  "storage/unauthorized": "غير مصرح له",
+  "storage/retry-limit-exceeded": "تم تجاوز حد إعادة المحاولة",
+  "storage/invalid-checksum": "رمز التحقق غير صالح",
+  "storage/canceled": "تم إلغاء العملية",
+  "storage/invalid-event-name": "اسم الحدث غير صالح",
+  "storage/invalid-url": "عنوان URL غير صالح",
+  "storage/invalid-argument": "وسيطة غير صالحة",
+  "storage/no-default-bucket": "لا يوجد جردل افتراضي",
+  "storage/cannot-slice-blob": "لا يمكن تقسيم الكتلة",
+
+  // Realtime Database Errors
+  "database/disconnected": "تم فصل الاتصال",
+  "database/expired-token": "انتهت صلاحية الرمز",
+  "database/invalid-token": "الرمز غير صالح",
+  "database/invalid-argument": "وسيطة غير صالحة",
+  "database/permission-denied": "تم رفض الإذن",
+  "database/unauthenticated": "غير مصادق عليه",
+  "database/unauthorized": "غير مصرح له",
+  "database/unknown-error": "خطأ غير معروف",
+  "database/network-error": "خطأ في الشبكة",
+  "database/failed-precondition": "فشل شرط مسبق",
+  "database/timeout": "انتهت المهلة المحددة",
+  "database/too-big": "البيانات كبيرة جداً",
+
+  // Add more Firebase services and error codes as needed
+};
+
+export function getFirebaseErrorMessageInArabic(errorCode) {
+  return firebaseErrorMessagesInArabic[errorCode] || "خطأ غير معروف";
+}

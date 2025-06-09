@@ -1,0 +1,12 @@
+@keyframes AnimatedText {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.input {
+  animation: AnimatedText linear 1 0.3s;
+  -webkit-animation: AnimatedText linear 1 0.3s;
+}

@@ -1,0 +1,181 @@
+import {
+  Flex,
+  Stack,
+  Drawer,
+  DrawerBody,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useMediaQuery,
+  Button,
+  useDisclosure,
+  IconButton,
+  Skeleton,
+} from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Filteration } from "./Parts/Filteration";
+import { useFetch } from "../../../../Hooks/Index";
+import { HiOutlineBars3 } from "react-icons/hi2";
+import { CourseCard, Pagination } from "../../../../Components/Common/Index";
+export default function Index() {
+  const [page, setPage] = useState(1);
+
+  const [isPhoneQuery] = useMediaQuery("(max-width: 900px)");
+  const { data, loading, error } = useFetch({
+    endpoint: "courses",
+    // params: {
+    //   level: search.levelsSelected,
+    //   language: "ur",
+    //   price: "",
+    //   price_min: "",
+    //   price_max: "",
+    //   author: "",
+    //   category: "",
+    //   sub_category: "",
+    //   search: "",
+    //   page: null,
+    // },
+  });
+
+  const [search, setSearch] = useState({
+    sortBy: "",
+    priceType: "Paid",
+    priceRange: [],
+    categoriesSeleacted: [],
+    languagesSelected: [],
+    authorsSelected: [],
+    levelsSelected: [],
+    statusSelected: [],
+  });
+  const HandleChangeSearch = ({ path, value }) => {
+    console.log(path);
+    setSearch((prev) => {
+      return { ...prev, [path]: value };
+    });
+  };
+  const HandleClear = () => {
+    setSearch({
+      sortBy: "",
+      priceType: "Paid",
+      priceRange: [],
+      categoriesSeleacted: [],
+      languagesSelected: [],
+      authorsSelected: [],
+      levelsSelected: [],
+      statusSelected: [],
+    });
+  };
+  const HandleAddItemToList = ({ path, value }) => {
+    if (search[path].includes(value)) {
+      return;
+    }
+    setSearch((prev) => {
+      return { ...prev, [path]: [...search[path], value] };
+    });
+  };
+  const HandleRemoveItemInList = ({ path, value }) => {
+    setSearch((prev) => {
+      return {
+        ...prev,
+        [path]: search[path].filter((item) => {
+          return item !== value;
+        }),
+      };
+    });
+  };
+  const HandleCheckIfItemExist = ({ path, value }) => {
+    return search[path].includes(value);
+  };
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  return (
+    <Flex gap="3" p="3" bgColor="gray.100">
+      {isPhoneQuery ? (
+        <Drawer size="md" isOpen={isOpen} placement="left" onClose={onClose}>
+          <DrawerOverlay />
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader>Filter</DrawerHeader>
+
+            <DrawerBody>
+              <Filteration
+                onClear={HandleClear}
+                onChange={HandleChangeSearch}
+                onAddItemToList={HandleAddItemToList}
+                onRemoveItemFromList={HandleRemoveItemInList}
+                onCheckIfItemExist={HandleCheckIfItemExist}
+                value={search}
+              />
+            </DrawerBody>
+
+            <DrawerFooter>
+              <Button variant="outline" mr={3} onClick={onClose}>
+                Cancel
+              </Button>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        <Filteration
+          onClear={HandleClear}
+          onChange={HandleChangeSearch}
+          onAddItemToList={HandleAddItemToList}
+          onRemoveItemFromList={HandleRemoveItemInList}
+          onCheckIfItemExist={HandleCheckIfItemExist}
+          value={search}
+        />
+      )}
+
+      <Stack
+        pos="relative"
+        borderRadius="lg"
+        bgColor="white"
+        w="100%"
+        h="fit-content"
+      >
+        {isPhoneQuery && (
+          <IconButton
+            onClick={onOpen}
+            pos="absolute"
+            top="3"
+            left="3"
+            colorScheme="blue"
+            zIndex="10"
+          >
+            <HiOutlineBars3 />
+          </IconButton>
+        )}
+        <Flex
+          gap="3"
+          flexWrap="wrap"
+          as={Skeleton}
+          isLoaded={!loading}
+          fadeDuration="3"
+          p="4"
+          borderRadius="lg"
+          justifyContent="center"
+          minH="500px"
+          h="100%"
+          alignItems="start"
+        >
+          {data?.results?.map((item, index) => {
+            return (
+              <CourseCard
+                {...item}
+                key={item.id + item.title}
+                transition={`${(index + 1) * 0.2}s`}
+              />
+            );
+          })}
+        </Flex>
+        <Pagination
+          isLoading={loading}
+          totalPages={data?.pagination?.totalPages}
+          currentPage={page}
+        />
+      </Stack>
+    </Flex>
+  );
+}

@@ -10,6 +10,12 @@ export const useFetch = ({ endpoint, params = {}, headers, ...rest }) => {
   const getData = async () => {
     try {
       setLoading(true);
+      console.log(`Fetching data from: ${endpoint}`, {
+        baseURL: axiosInstance.defaults.baseURL,
+        params,
+        hasToken: user?.data?.token?.access ? 'Yes' : 'No'
+      });
+      
       const res = await axiosInstance.get(endpoint, {
         params,
         headers:
@@ -19,9 +25,11 @@ export const useFetch = ({ endpoint, params = {}, headers, ...rest }) => {
           }),
         ...rest,
       });
+      console.log(`Data received from ${endpoint}:`, res.data);
       setData(res.data);
       setError(undefined);
     } catch (err) {
+      console.error(`Error fetching ${endpoint}:`, err.response || err);
       setError(err);
       setLoading(false);
     } finally {

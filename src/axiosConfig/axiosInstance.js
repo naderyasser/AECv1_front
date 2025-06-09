@@ -3,17 +3,30 @@ import { getToken } from "../Utils/GetToken/GetToken";
 import axios from "axios";
 import { UpdateAccessToken } from "../Utils/UpdateAccessToken/UpdateAccessToken";
 
-// Determine which base URL to use based on the environment variable
-const useProduction = import.meta.env.VITE_USE_PRODUCTION === "true";
-const apiUrl = useProduction
-  ? import.meta.env.VITE_PRODUCTION_API_URL
-  : import.meta.env.VITE_API_URL;
+// Automatically determine which base URL to use
+// Use production API if deployed on Vercel or if explicitly set
+const isProduction = import.meta.env.PROD || import.meta.env.VITE_USE_PRODUCTION === "true";
+const apiUrl = isProduction
+  ? import.meta.env.VITE_PRODUCTION_API_URL || "https://api.aectraining.com.sa/api"
+  : import.meta.env.VITE_API_URL || "http://74.48.196.51:8877/api";
+
+// Debug logging (remove in production)
+console.log("Environment:", {
+  PROD: import.meta.env.PROD,
+  USE_PRODUCTION: import.meta.env.VITE_USE_PRODUCTION,
+  isProduction,
+  apiUrl
+});
 
 const instance = axios.create({
   baseURL: apiUrl,
   headers: {
     "Content-type": "application/json",
+    // Add CORS related headers
+    "Accept": "application/json",
   },
+  // Enable sending cookies cross-domain
+  withCredentials: false,
 });
 
 const refreshToken = async () => {

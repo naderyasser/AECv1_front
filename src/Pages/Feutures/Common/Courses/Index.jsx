@@ -24,20 +24,23 @@ export default function Index() {
 
   const [isPhoneQuery] = useMediaQuery("(max-width: 900px)");
   const { data, loading, error } = useFetch({
-    endpoint: "courses",
-    // params: {
-    //   level: search.levelsSelected,
-    //   language: "ur",
-    //   price: "",
-    //   price_min: "",
-    //   price_max: "",
-    //   author: "",
-    //   category: "",
-    //   sub_category: "",
-    //   search: "",
-    //   page: null,
-    // },
+    endpoint: "courses/",
+    params: {
+      page: page,
+      // Uncomment and use these when you have the filters working
+      // level: search.levelsSelected.length > 0 ? search.levelsSelected.join(',') : undefined,
+      // language: search.languagesSelected.length > 0 ? search.languagesSelected.join(',') : undefined,
+      // price: search.priceType || "",
+      // category: search.categoriesSeleacted.length > 0 ? search.categoriesSeleacted.join(',') : undefined,
+    },
   });
+  
+  // Log any errors to help with debugging
+  useEffect(() => {
+    if (error) {
+      console.error("Error loading courses:", error);
+    }
+  }, [error]);
 
   const [search, setSearch] = useState({
     sortBy: "",
@@ -160,20 +163,33 @@ export default function Index() {
           h="100%"
           alignItems="start"
         >
-          {data?.results?.map((item, index) => {
-            return (
+          {data?.results?.length > 0 ? (
+            data.results.map((item, index) => (
               <CourseCard
                 {...item}
                 key={item.id + item.title}
                 transition={`${(index + 1) * 0.2}s`}
               />
-            );
-          })}
+            ))
+          ) : !loading ? (
+            <Flex 
+              direction="column" 
+              alignItems="center" 
+              justifyContent="center" 
+              p="10" 
+              textAlign="center" 
+              color="gray.500"
+            >
+              <Box fontSize="xl" mb="3">No courses found</Box>
+              <Box fontSize="md">Try adjusting your filters or check back later</Box>
+            </Flex>
+          ) : null}
         </Flex>
         <Pagination
           isLoading={loading}
-          totalPages={data?.pagination?.totalPages}
+          totalPages={data?.pagination?.totalPages || 1}
           currentPage={page}
+          onChange={(newPage) => setPage(newPage)}
         />
       </Stack>
     </Flex>
